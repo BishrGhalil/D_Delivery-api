@@ -63,3 +63,6 @@ class UserModel(UserMixin, db.Model):
             "Address": self.Address,
             "Phone": self.Phone
         }
+
+    def __repr__(self):
+        return f"<ID: {self.ID}, Username: {self.Username}, FirstName {self.FirstName}, LastName: {self.LastName}, Address: {self.Address}, Phone: {self.Phone}>"
