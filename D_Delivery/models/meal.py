@@ -20,7 +20,14 @@ class MealModel(db.Model):
     # TODO: Change nullable to False
     ImgUrl = db.Column(db.String(300), nullabl=True)
 
-    DefaultSortKey = Rating.desc()
+    SortKeys = {
+        "name": Name.asc(),
+        "category": Category.asc(),
+        "price": Price.asc(),
+        "rating": Rating.desc(),
+        "preparetime": PreparingTime.asc(),
+        "default": Rating.desc()
+    }
 
     def __ini__(self, id, name, quantity, preparing_time, price, category,
                 img_url, rating):
@@ -35,33 +42,36 @@ class MealModel(db.Model):
         self.CreationDate = dt.now()
 
     @classmethod
-    def fetch_all(cls, sortkey=MealModel.DefaultSortKey):
-        return cls.query.order_by(sortkey).all()
+    def fetch_all(cls, sortkey):
+        return cls.query.order_by(SortKeys.get(sortkey)).all()
 
     @classmethod
     def fetch_by_name(cls, name):
-        return cls.query.order_by(Name=name).first()
+        return cls.query.filter_by(Name=name).first()
 
     @classmethod
     def fetch_by_id(cls, id):
-        return cls.query.order_by(ID=id).first()
+        return cls.query.filter_by(ID=id).first()
 
     @classmethod
-    def fetch_by_category(cls, category, sortkey=MealModel.DefaultSortKey):
-        return cls.query.filter_by(Category=category).order_by(sortkey).all()
+    def fetch_by_category(cls, category, sortkey):
+        return cls.query.filter_by(Category=category).order_by(
+            SortKeys.get(sortkey)).all()
 
     @classmethod
-    def fetch_by_price(cls, price, sortkey=MealModel.DefaultSortKey):
-        return cls.query.filter_by(Price=price).order_by(sortkey).all()
+    def fetch_by_price(cls, price, sortkey):
+        return cls.query.filter_by(Price=price).order_by(
+            SortKeys.get(sortkey)).all()
 
     @classmethod
-    def find_by_rating(cls, rating, sortkey=MealModel.DefaultSortKey):
-        return cls.query.filter_by(Rating=rating).order_by(sortkey).all()
+    def find_by_rating(cls, rating, sortkey):
+        return cls.query.filter_by(Rating=rating).order_by(
+            SortKeys.get(sortkey)).all()
 
     @classmethod
-    def find_by_ptime(cls, preparing_time, sortkey=MealModel.DefaultSortKey):
-        return cls.query.filter_by(
-            PreparingTime=preparing_time).order_by(sortkey).all()
+    def find_by_ptime(cls, preparing_time, sortkey):
+        return cls.query.filter_by(PreparingTime=preparing_time).order_by(
+            SortKeys.get(sortkey)).all()
 
     def db_commit(self):
         db.session.add(self)

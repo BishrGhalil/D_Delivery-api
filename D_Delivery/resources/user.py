@@ -8,61 +8,42 @@ from flask import request, jsonify, make_response
 from flask_restful import Resource, reqparse
 from flask_login import login_user, logout_user, login_required, current_user
 from D_Delivery.models.user import Usermodel
+from D_Delivery.resources.responses import not_exists, not_authorized, already_exists
 
 
 class User(Resource):
 
-    def get(self, id):
-        output = []
-        query = UserModel.find_by_id(id)
-        not_exists_msg = "User does not exists."
-        if not query:
-            return make_response(jsonify(message=not_exists_msg), 404)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("Username", type=str, required=False, help=msg)
+        parser.add_argument("ID", type=int, required=False, help=msg)
+        data = parser.parse_args()
 
-        else:
-            output = query[0].serialize()
-            if not output:
-                return make_response(jsonify(message=not_exists_msg), 404)
+        if data.get("Username"):
+            query = UserModel.find_by_username(data.get("Username"))
+        elif data.get("ID"):
+            query = UserModel.find_by_id(data.get("ID"))
 
-            else:
-                return make_response(jsonify(user=output), 200)
+        if not query: return not_exists("User")
+
+        output = query[0].serialize()
+        if not output: return not_exists("User")
+        return make_response(jsonify(user=output), 200)
 
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument("Username",
-                            type=str,
-                            required=True,
-                            help="This field can't be empty")
-
-        parser.add_argument("Password",
-                            type=str,
-                            required=True,
-                            help="This field can't be empty")
-
-        parser.add_argument('FirstName',
-                            type=str,
-                            required=True,
-                            help="This field can't be empty")
-
-        parser.add_argument('LastName',
-                            type=str,
-                            required=True,
-                            help="This field can't be empty")
-
-        parser.add_argument('Address',
-                            type=str,
-                            required=False,
-                            help="This field can't be empty")
-
-        parser.add_argument('Phone',
-                            type=str,
-                            required=False,
-                            help="This field can't be empty")
+        msg = "This field can't be empty."
+        parser.add_argument("Username", type=str, required=True, help=msg)
+        parser.add_argument("Password", type=str, required=True, help=msg)
+        parser.add_argument('FirstName', type=str, required=True, help=msg)
+        parser.add_argument('LastName', type=str, required=True, help=msg)
+        parser.add_argument('Address', type=str, required=False, help=msg)
+        parser.add_argument('Phone', type=str, required=False, help=msg)
 
         data = User.parser.parse_args()
 
         if UserModel.find_by_username(data['Username']):
-            return make_response(jsonify(message="User already exist."), 404)
+            return already_exists("User")
 
         else:
             user = UserModel(data.get('Username'), data.get('Password'),
@@ -74,66 +55,50 @@ class User(Resource):
 
     def delete(self):
         parser = reqparse.RequestParser()
-        parser.add_argument("Username",
-                            type=str,
-                            required=True,
-                            help="This field can't be empty")
+        parser.add_argument("ID", type=int, required=True, help=msg)
+        msg = "This field can't be empty."
 
         args = User.parser.parse_args()
-        if args.get('UserID'):
-            query = UserModel.find_by_id(args['UserID'])
-            if not query:
-                return make_response(jsonify(message=not_exists_msg), 404)
-
-            else:
-                user = query[0]
-                user.delete()
-                msg = "User has been deleted"
-                return make_response(jsonify(message=msg), 200)
+        query = UserModel.find_by_id(args['ID'])
+        if not query: return not_exists("User")
+        user = query[0]
+        user.delete()
+        msg = "User has been deleted"
+        return make_response(jsonify(message=msg), 200)
 
 
 class Login(Resource):
 
     def post(self):
+        msg = "This field can't be empty."
         parser = reqparse.RequestParser()
-        parser.add_argument('Username',
-                            type=str,
-                            required=True,
-                            help="This field can't be empty.")
-
-        parser.add_argument('Password',
-                            type=str,
-                            required=True,
-                            help="This field can't be empty.")
+        parser.add_argument('Username', type=str, required=True, help=msg)
+        parser.add_argument('Password', type=str, required=True, help=msg)
 
         data = User.parser.parse_args()
-        query = UserModel.find_by_username(data['Username'])
-        if not query:
-            msg = "Not a valid Username, User does not exists."
-            return make_response(jsonify(message=msg), 401)
+        username = data.get("Username")
+        password = data.get("Password")
+        query = UserModel.find_by_username(username)
+        if not query: return not_authorized("Not a valid Username")
 
-        else:
-            user = query[0]
-            if not user.pass_verify(data.get('Password')):
-                msg = "Password is not correct."
-                return make_response(jsonify(message=msg), 401)
+        user = query[0]
+        if not user.pass_verify(password):
+            return not_authorized("Not a valid password")
 
-            else:
-                login_user(user, remember=True)
-                if not current_user.is_authenticated:
-                    msg = "Not logged in."
-                    make_response(jsonify(message=msg), 401)
+        login_user(user, remember=True)
+        if not current_user.is_authenticated:
+            return not_authorized("Not logged in")
 
-                else:
-                    msg = f"Logged in as {current_user.Username}."
-                    return make_response(jsonify(message=msg), 200)
+        msg = f"Logged in as {current_user.Username}."
+        return make_response(jsonify(message=msg), 200)
 
 
 class Logout(Resource):
 
     def get(self):
         if not current_user.is_authenticated:
-            return make_response(jsonify(message="Not logged in."), 401)
+            return not_authorized("Not logged in.")
+
         logout_user()
         return make_response(jsonify(message="Logged out."), 200)
 
@@ -142,7 +107,7 @@ class Wloggedin(Resource):
 
     def get(self):
         if not current_user.is_authenticated:
-            return make_response(jsonify(message="Not logged in."), 401)
+            return not_authorized("Not logged in.")
 
         msg = f"username:{current_user.Username}, id:{current_user.UserID}, password:{current_user.Password}"
         return make_response(jsonify(message=msg), 200)
