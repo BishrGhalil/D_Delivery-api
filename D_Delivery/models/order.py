@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from db import db
+from D_Delivery.core.db import db
 
 
 class OrderModel(db.Model):

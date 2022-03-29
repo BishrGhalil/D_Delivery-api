@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from db import db
-from datatime import datetime as dt
+from D_Delivery.core.db import db
+from datetime import datetime as dt
 
 
 class MealModel(db.Model):
