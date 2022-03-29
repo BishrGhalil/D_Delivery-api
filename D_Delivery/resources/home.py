@@ -3,7 +3,7 @@
 from flask_restful import Resource
 
 
-class Root(Resource):
+class Home(Resource):
 
     def get(self):
         return "Hello, Qubit!", 200
