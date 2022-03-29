@@ -43,4 +43,4 @@ PY3 = version_info[0] >= 3
 
 args = None
 
-from D_Delivery.core.main import main
+from D_Delivery.core.main import *
