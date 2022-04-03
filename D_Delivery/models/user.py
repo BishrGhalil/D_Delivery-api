@@ -9,7 +9,7 @@ from flask_login import UserMixin
 class UserModel(UserMixin, db.Model):
     __tablename__ = "Users"
 
-    ID = db.Column(db.Integer, primary_key=True)
+    ID = db.Column(db.Integer, autoincrement=True, primary_key=True)
     Username = db.Column(db.String(45), unique=True, nullable=False)
     Password = db.Column(db.String(256), nullable=False)
     FirstName = db.Column(db.String(45), nullable=False)
@@ -17,9 +17,9 @@ class UserModel(UserMixin, db.Model):
     Address = db.Column(db.String(45), nullable=False)
     Phone = db.Column(db.String(15), nullable=False)
 
-    def __init__(self, id, username, password, firstname, lastname, address,
+    def __init__(self, username, password, firstname, lastname, address,
                  phone):
-        self.ID = id
+        self.ID = None
         self.Username = username
         self.Password = generate_password_hash(password)
         self.FirstName = firstname
@@ -31,16 +31,20 @@ class UserModel(UserMixin, db.Model):
         return self.ID
 
     @classmethod
-    def fetch_all(cls):
+    def find_all(cls):
         return cls.query.all()
 
     @classmethod
-    def fetch_by_username(cls, username):
+    def find_by_username(cls, username):
         return cls.query.filter_by(Username=username).all()
 
     @classmethod
-    def fetch_by_id(cls, id):
+    def find_by_id(cls, id):
         return cls.query.filter_by(ID=id).all()
+
+    @classmethod
+    def delete_all(cls):
+        return cls.query.delete()
 
     def commit(self):
         db.session.add(self)
