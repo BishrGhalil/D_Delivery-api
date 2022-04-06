@@ -16,6 +16,7 @@ class Meal(Resource):
 
         output = []
         data = parser.parse_args()
+        query = ""
 
         if data.get("ID"):
             query = MealModel.find_by_id(data.get("ID"))
@@ -23,7 +24,7 @@ class Meal(Resource):
             query = MealModel.find_by_name(data.get("Name"))
 
         if not query: return not_exists("Meal")
-        output = query[0].serialize()
+        output = query.serialize()
         return make_response(jsonify(meal=output), 200)
 
     def post(self):
@@ -38,7 +39,7 @@ class Meal(Resource):
         parser.add_argument('Rating', type=float, required=True, help=msg)
 
         data = parser.parse_args()
-        if MealModel.find_by_name(data['MealName']):
+        if MealModel.find_by_name(data['Name']):
             return already_exists("Meal")
 
         meal = MealModel(**data)
@@ -46,13 +47,22 @@ class Meal(Resource):
         return make_response(jsonify(message="Meal has been added"), 201)
 
     def delete(self):
-        msg = "This field can't be empty."
         parser = reqparse.RequestParser()
-        data = parser.parse_args()
+        parser.add_argument('Name', type=str, required=False)
+        parser.add_argument('ID', type=int, required=False)
 
-        query = MealModel.find_by_id(data.get("id"))
-        if not query: return not_exists("Meal")
-        meal = query[0]
-        meal.delete()
+        args = parser.parse_args()
+        if args.get("Name"):
+            query = MealModel.find_by_name(args.get("Name"))
+            if not query: return not_exists("Meal")
+            meal = query
+            meal.delete()
+
+        elif args.get("ID"):
+            query = MealModel.find_by_id(args.get("ID"))
+            if not query: return not_exists("Meal")
+            meal = query
+            meal.delete()
+
         msg = "Meal has been deleted."
         return make_response(jsonify(message=msg), 200)
