@@ -2,7 +2,7 @@ from flask import request, jsonify, make_response
 from flask_restful import Resource, reqparse
 from D_Delivery.models.meal import MealModel
 from D_Delivery.models.user import UserModel
-from D_Delivery.models.transporter import TransModel
+from D_Delivery.models.transporter import TransporterModel
 from D_Delivery.models.history import OrdersHistoryModel
 from D_Delivery.resources.responses import not_exists, already_exists
 from datetime import datetime

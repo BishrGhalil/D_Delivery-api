@@ -31,7 +31,7 @@ class Meal(Resource):
         msg = "This field can't be empty."
         parser = reqparse.RequestParser()
         parser.add_argument('Name', type=str, required=True, help=msg)
-        parser.add_argument('Price', type=int, required=True, help=msg)
+        parser.add_argument('Price', type=float, required=True, help=msg)
         parser.add_argument('Quantity', type=int, required=True, help=msg)
         parser.add_argument('Category', type=str, required=True, help=msg)
         parser.add_argument('PreparingTime', type=int, required=True, help=msg)

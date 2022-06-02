@@ -3,7 +3,7 @@
 
 from flask import request, jsonify, make_response
 from flask_restful import Resource, reqparse
-from D_Delivery.models.mealmodel import MealModel
+from D_Delivery.models.meal import MealModel
 from D_Delivery.resources.responses import not_exists
 
 
@@ -13,16 +13,16 @@ class Meals(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('all', type=bool, required=False)
         parser.add_argument('Category', type=str, required=False)
-        parser.add_argument('Price', type=int, required=False)
+        parser.add_argument('Price', type=float, required=False)
         parser.add_argument('PreparingTime', type=int, required=False)
         parser.add_argument('Rating', type=float, required=False)
         parser.add_argument('Sortkey', type=str, required=False)
 
-        args = Meals.parser.parse_args()
+        args = parser.parse_args()
         sortkey = args.get('Sortkey') if args.get('Sortkey') else "default"
         output = []
 
-        if not MealModel.SortKeys.get(sortkey): return not_exists("Sort key")
+        if sortkey not in MealModel.SortKeys: return not_exists("Sort key")
 
         if args.get('all'):
             query = MealModel.find_all(sortkey)
@@ -42,7 +42,7 @@ class Meals(Resource):
                 output.extend([i.serialize() for i in query])
 
             if args.get('PreparingTime'):
-                query = MealModel.find_by_ptime(args['PreparingTime'], sortkey)
+                query = MealModel.find_by_time(args['PreparingTime'], sortkey)
                 output.extend([i.serialize() for i in query])
 
         if not output: return not_exists("Meals")

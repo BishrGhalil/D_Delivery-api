@@ -46,8 +46,12 @@ class User(Resource):
         parser.add_argument("Password", type=str, required=True, help=msg)
         parser.add_argument('FirstName', type=str, required=True, help=msg)
         parser.add_argument('LastName', type=str, required=True, help=msg)
-        parser.add_argument('Address', type=str, required=False, help=msg)
-        parser.add_argument('Phone', type=str, required=False, help=msg)
+        parser.add_argument('Phone', type=str, required=True, help=msg)
+        parser.add_argument('Address',
+                            type=str,
+                            required=False,
+                            default="None",
+                            help=msg)
 
         data = parser.parse_args()
 

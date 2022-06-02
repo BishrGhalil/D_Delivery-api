@@ -41,8 +41,8 @@ class MealModel(db.Model):
         self.ImgUrl = img_url
 
     @classmethod
-    def fetch_all(cls, sortkey):
-        return cls.query.order_by(SortKeys.get(sortkey)).all()
+    def find_all(cls, sortkey):
+        return cls.query.order_by(cls.SortKeys.get(sortkey)).all()
 
     @classmethod
     def find_by_name(cls, name):
@@ -55,22 +55,22 @@ class MealModel(db.Model):
     @classmethod
     def find_by_category(cls, category, sortkey):
         return cls.query.filter_by(Category=category).order_by(
-            SortKeys.get(sortkey)).all()
+            cls.SortKeys.get(sortkey)).all()
 
     @classmethod
     def find_by_price(cls, price, sortkey):
         return cls.query.filter_by(Price=price).order_by(
-            SortKeys.get(sortkey)).all()
+            cls.SortKeys.get(sortkey)).all()
 
     @classmethod
     def find_by_rating(cls, rating, sortkey):
         return cls.query.filter_by(Rating=rating).order_by(
-            SortKeys.get(sortkey)).all()
+            cls.SortKeys.get(sortkey)).all()
 
     @classmethod
     def find_by_time(cls, preparing_time, sortkey):
         return cls.query.filter_by(PreparingTime=preparing_time).order_by(
-            SortKeys.get(sortkey)).all()
+            cls.SortKeys.get(sortkey)).all()
 
     def commit(self):
         db.session.add(self)

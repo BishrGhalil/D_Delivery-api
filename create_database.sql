@@ -1,13 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
-
-creation_script = """
 BEGIN TRANSACTION;
-
 CREATE TABLE IF NOT EXISTS "Users" (
   ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   Username  TEXT NOT NULL UNIQUE,
@@ -15,7 +6,7 @@ CREATE TABLE IF NOT EXISTS "Users" (
   FirstName TEXT NOT NULL,
   LastName TEXT NOT NULL,
   Address TEXT NOT NULL,
-  Phone TEXT NOT NULL
+  Phone TEXT NOT NULL,
 );
 
 CREATE TABLE IF NOT EXISTS "Transporters" (
@@ -23,7 +14,7 @@ CREATE TABLE IF NOT EXISTS "Transporters" (
   Username  TEXT NOT NULL UNIQUE,
   FirstName TEXT NOT NULL,
   LastName TEXT NOT NULL,
-  Phone TEXT NOT NULL
+  Phone TEXT NOT NULL,
 );
 
 CREATE TABLE IF NOT EXISTS "Meals" (
@@ -34,7 +25,7 @@ CREATE TABLE IF NOT EXISTS "Meals" (
   PreparingTime INTEGER NOT NULL,
   Price FLOAT NOT NULL,
   Rating FLOAT NOT NULL,
-  ImgUrl TEXT NOT NULL
+  ImgUrl TEXT NOT NULL,
 );
 
 CREATE TABLE IF NOT EXISTS "Orders" (
@@ -46,14 +37,14 @@ CREATE TABLE IF NOT EXISTS "Orders" (
   MealID INTEGER NOT NULL
 );
 
+
 CREATE TABLE IF NOT EXISTS "OrdersHistory" (
   ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   OrderTime DATETIME NOT NULL,
   OrderStatus INTEGER NOT NULL,
   MealID INTEGER NOT NULL,
   UserID INTEGER NOT NULL,
-  TransporterID INTEGER NOT NULL
+  TransporterID INTEGER NOT NULL,
 );
 
 COMMIT;
-"""

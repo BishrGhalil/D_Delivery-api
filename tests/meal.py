@@ -7,15 +7,15 @@ URL = "http://127.0.0.1:5000/meal"
 
 OldMeals = [{
     "Name": "Tacko Wite Souce",
-    "Price": 10,
+    "Price": 10.1,
     "Quantity": 9,
-    "Category": "meat",
+    "Category": "pasta",
     "PreparingTime": 8,
     "ImgUrl": "https://SomePhotoUrl.com",
     "Rating": 9.3,
 }, {
     "Name": "French Rice",
-    "Price": 29,
+    "Price": 29.2,
     "Quantity": 30,
     "Category": "rice",
     "PreparingTime": 10,
@@ -25,7 +25,7 @@ OldMeals = [{
 
 NewMeals = [{
     "Name": "Pasta White Souce",
-    "Price": 10,
+    "Price": 10.4,
     "Quantity": 100,
     "Category": "pasta",
     "PreparingTime": 8,
@@ -33,7 +33,7 @@ NewMeals = [{
     "Rating": 9.8,
 }, {
     "Name": "Pasta Italiano",
-    "Price": 10,
+    "Price": 10.4,
     "Quantity": 20,
     "Category": "pasta",
     "PreparingTime": 9,
@@ -43,6 +43,7 @@ NewMeals = [{
 
 OldMealsNames = [Meal.get("Name") for Meal in OldMeals]
 NewMealsNames = [Meal.get("Name") for Meal in NewMeals]
+OldCategory = OldMealsName[0].get("Category")
 
 
 def get_by_id(id):
@@ -150,6 +151,41 @@ class TestPostRequest(unittest.TestCase):
         meal = NewMeals[1]
         data, code = post_meal(**meal)
         self.assertEqual(code, 201)
+
+
+class TestMealsResource(unittest.TestCase):
+
+    URL = "http://127.0.0.1:5000/meal"
+
+    def setUp(self):
+        pass
+
+    def test_getAll(self):
+        data, code = self.getAll()
+        self.assertEqual(code, 200)
+
+    def test_getCategory(self):
+        data, code = self.getCategory()
+        self.assertEqual(code, 200)
+
+    def test_getPrice(self):
+        data, code = self.getPrice()
+        self.assertEqual(code, 200)
+
+    def getAll():
+        PARAMS = {"all": True}
+        res = requests.get(url=URL, params=PARAMS)
+        return res.json(), res.status_code
+
+    def getCategory():
+        PARAMS = {"Category": OldCategory}
+        res = requests.get(url=URL, params=PARAMS)
+        return res.json(), res.status_code
+
+    def getPrice():
+        PARAMS = {"Price": OldCategory}
+        res = requests.get(url=URL, params=PARAMS)
+        return res.json(), res.status_code
 
 
 if __name__ == '__main__':

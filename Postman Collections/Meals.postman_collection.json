@@ -1,0 +1,310 @@
+{
+	"info": {
+		"_postman_id": "55ad2a16-3fdf-46b1-91f4-e8ffe779dd3b",
+		"name": "Meals",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/meals?all=true",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"meals"
+					],
+					"query": [
+						{
+							"key": "all",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get all",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/meals?all=true",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"meals"
+							],
+							"query": [
+								{
+									"key": "all",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Get by category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/meals?Category=pasta",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"meals"
+					],
+					"query": [
+						{
+							"key": "Category",
+							"value": "pasta"
+						},
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get by category",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/meals?Category=pasta",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"meals"
+							],
+							"query": [
+								{
+									"key": "Category",
+									"value": "pasta"
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Get by category sorted",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/meals?Category=pasta&Sortkey=price",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"meals"
+							],
+							"query": [
+								{
+									"key": "Category",
+									"value": "pasta"
+								},
+								{
+									"key": "Sortkey",
+									"value": "price"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Get by price",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/meals?Price=10.0",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"meals"
+					],
+					"query": [
+						{
+							"key": "Price",
+							"value": "10.0"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get by price",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/meals?Price=10.0",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"meals"
+							],
+							"query": [
+								{
+									"key": "Price",
+									"value": "10.0"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Get by ranting",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/meals?Rating=9.3",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"meals"
+					],
+					"query": [
+						{
+							"key": "Rating",
+							"value": "9.3"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get by ranting",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/meals?Rating=9.3",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"meals"
+							],
+							"query": [
+								{
+									"key": "Rating",
+									"value": "9.3"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Get by preparing time",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/meals?PreparingTime=8",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"meals"
+					],
+					"query": [
+						{
+							"key": "PreparingTime",
+							"value": "8"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get by preparing time",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/meals?PreparingTime=8",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"meals"
+							],
+							"query": [
+								{
+									"key": "PreparingTime",
+									"value": "8"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}

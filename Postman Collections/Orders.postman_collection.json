@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "d1aed3a7-fd53-43bc-8e73-07f5fe11286d",
+		"name": "Orders",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/orders?all=true",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders"
+					],
+					"query": [
+						{
+							"key": "all",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get all",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/orders?all=true",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "all",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Get all sorted",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/orders?all=true&Sortkey=time",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "all",
+									"value": "true"
+								},
+								{
+									"key": "Sortkey",
+									"value": "time"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Get by user id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/orders?User=2",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders"
+					],
+					"query": [
+						{
+							"key": "User",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get by user id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/User=2",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"User=2"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Get by meal id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/orders?meal=1",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders"
+					],
+					"query": [
+						{
+							"key": "meal",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get by meal id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/orders?meal=1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "meal",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}

@@ -7,13 +7,16 @@ from D_Delivery.core.db import db
 class TransporterModel(db.Model):
     __tablename__ = 'Transporters'
 
-    ID = db.Column(db.Integer, primary_key=True)
+    ID = db.Column(db.Integer, autoincrement=True, primary_key=True)
     Username = db.Column(db.String(255), unique=True, nullable=False)
     FirstName = db.Column(db.String(45), nullable=False)
     LastName = db.Column(db.String(45), nullable=False)
     Phone = db.Column(db.String(10), nullable=False)
 
-    DefaultSortKey = Username
+    SortKeys = {
+        "name": FirstName.asc(),
+        "default": Username.asc(),
+    }
 
     def __init__(self, id, username, firstname, lastname, phone):
         self.ID = id
@@ -23,8 +26,8 @@ class TransporterModel(db.Model):
         self.Phone = phone
 
     @classmethod
-    def find_all(cls, sortkey=TransporterModel.DefaultSortKey):
-        return cls.query.order_by(sortkey).all()
+    def find_all(cls, sortkey):
+        return cls.query.order_by(SortKeys.get(sortkey)).all()
 
     @classmethod
     def find_by_username(cls, username):
@@ -34,11 +37,11 @@ class TransporterModel(db.Model):
     def find_by_id(cls, id):
         return cls.query.filter_by(ID=id).first()
 
-    def db_commit(self):
+    def commit(self):
         db.session.add(self)
         db.session.commit()
 
-    def db_delete(self):
+    def delete(self):
         db.session.delete(self)
         db.session.commit()
 

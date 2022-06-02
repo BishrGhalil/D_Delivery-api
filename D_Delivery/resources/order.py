@@ -14,59 +14,63 @@ class Order(Resource):
 
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('all', type=bool, required=False)
-        parser.add_argument('ID', type=int, required=False)
-        parser.add_argument('User', type=int, required=False)
-        parser.add_argument('Meal', type=int, required=False)
+        parser.add_argument('ID', type=int, required=True)
+
+        args = parser.parse_args()
+        output = []
 
         args = parser.parse_args()
         output = []
         query = ""
-        if args.get('all'):
-            query = OrderModel.find_all()
-
-        elif args.get('User'):
-            query = OrderModel.find_by_user(args['user'])
-
-        elif args.get('Meal'):
-            query = OrderModel.find_by_meal(args['meal'])
-
-        elif args.get('ID'):
-            query = OrderModel.find_by_id(args['ID'])
-
+        query = OrderModel.find_by_id(args['ID'])
         if not query: return not_exists("Order")
-        output = [i.serialize() for i in query]
-        return make_response(jsonify(orders=output), 200)
+        output = query[0].serialize()
+        return make_response(jsonify(order=output), 200)
 
     def post(self):
         msg = "This field can't be empty."
         parser = reqparse.RequestParser()
-        parser.add_argument('OrderStatus', type=int, required=True, help=msg)
-        parser.add_argument('OrderTime', type=str, required=True, help=msg)
-        parser.add_argument('OrderAddress', type=str, required=True, help=msg)
-        parser.add_argument('UserID', type=int, required=True, help=msg)
-        parser.add_argument('MealID', type=int, required=True, help=msg)
+        parser.add_argument('Status', type=str, required=True, help=msg)
+        parser.add_argument('Time', type=str, required=True, help=msg)
+        parser.add_argument('Address', type=str, required=True, help=msg)
+        parser.add_argument('User', type=int, required=True, help=msg)
+        parser.add_argument('Meal', type=int, required=True, help=msg)
 
         data = parser.parse_args()
-        query = MealModel.find_by_id(data['MealID'])
+        query = MealModel.find_by_id(data['Meal'])
         if not query: return not_exists("Meal")
 
-        query = UserModel.find_by_id(data['UserID'])
+        query = UserModel.find_by_id(data['User'])
         if not query: return not_exists("User")
 
-        data['OrderStatus'] = OrderModel.statuses.get(data.get("OrderStatus"))
+        status = OrderModel.statuses.get(data.get("Status"))
+        if not status: return not_exists("Status")
+        data['Status'] = status
 
         timestamp = datetime.now()
-        data['OrderTime'] = timestamp
+        data['Time'] = timestamp
 
         order = OrderModel(**data)
         order.commit()
         return make_response(jsonify(message="Order has been added"), 201)
 
+    def patch(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('ID', type=int, required=True)
+        args = parser.parse_args()
+
+        if args.get('ID'):
+            query = OrderModel.find_by_id(args['ID'])
+            if not query: return not_exists("Order")
+            order = query[0]
+            order.cancel()
+            msg = "Order has been cancelled."
+            return make_response(jsonify(message=msg), 200)
+
     def delete(self):
         parser = reqparse.RequestParser()
         parser.add_argument('ID', type=int, required=True)
-        args = Order.parser.parse_args()
+        args = parser.parse_args()
 
         if args.get('ID'):
             query = OrderModel.find_by_id(args['ID'])
